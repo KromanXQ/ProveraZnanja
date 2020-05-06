@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Svi Artikli</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+        th,td {
+            padding: 5px 12px;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <h3>Svi artikli</h3>
+    <div id="prikaz-artikla">
+        
+    </div>
+
+    <script>
+       
+        $(document).ready(function(){
+            $.ajax({
+                url:'/api/svi-artikli',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response){
+                    prikazPodataka(response);
+                }
+            });
+        });
+        //Funkcija za prikaz odgovora sa servera u tabeli
+        function prikazPodataka(response){
+            let divPrikazArtikla = document.querySelector("#prikaz-artikla");
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Naziv</th>
+                            <th>Datum</th>
+                            <th>Kompanija</th>
+                            <th>Email</th>
+                        </tr>
+                    <thead>
+                    <tbody>
+            `;
+            for(let o of response){
+                html += `
+                    <tr>
+                        <td>${o.id}</td>
+                        <td>${o.naziv}</td>
+                        <td>${o.datum}</td>
+                        <td>${o.kompanija}</td>
+                        <td>${o.email}</td>
+                        
+                    </tr>
+                `;
+            }
+            html += `
+                    </tbody>
+                </table>
+            `;
+            divPrikazArtikla.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
